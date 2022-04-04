@@ -126,6 +126,10 @@ export default {
 
         const resultExecute = await postExecuteTask(contracts, this.idcase);
         console.log("resultExecute: ", resultExecute);
+
+        this.$router.push({
+          name: "gracias",
+        });
       } else {
         // Presenta mensaje de error por campos obligatorios
 
@@ -139,6 +143,11 @@ export default {
       }
       this.loading = false;
     },
+    async testRe() {
+      this.$router.push({
+        name: "gracias",
+      });
+    },
   },
   async mounted() {
     this.loading = true;
@@ -149,16 +158,29 @@ export default {
       this.resultLead = await getDataContractLead(this.idcase);
       console.log("resultLead: ", this.resultLead);
       // obtiene la informacion del contrato purchaseorder
-      this.resultPurchaseOrder = await getDataContractPurchaseOrder(
-        this.idcase
-      );
-      console.log("resultPurchaseOrder: ", this.resultPurchaseOrder);
-      // asigna los datos del cliente a las variables locales
-      if (this.resultLead) {
-        this.nombre = this.resultLead.name;
-        this.apellido = this.resultLead.last_name;
-        this.validIdCase = true; // habilita el boton
+      try {
+        console.log("inicia llamado getDataContractPurchaseOrder");
+        this.resultPurchaseOrder = await getDataContractPurchaseOrder(
+          this.idcase
+        );
+        console.log("resultPurchaseOrder: ", this.resultPurchaseOrder);
+        // asigna los datos del cliente a las variables locales
+        if (this.resultLead) {
+          this.nombre = this.resultLead.name;
+          this.apellido = this.resultLead.last_name;
+          this.validIdCase = true; // habilita el boton
+        }
+      } catch (ex) {
+        console.log("Error en llamado getDataContractPurchaseOrder");
+        this.$swal({
+          title: "Error",
+          html: ex.message,
+          allowOutsideClick: false,
+          showCancelButton: false,
+          showConfirmButton: true,
+        });
       }
+      this.loading = false;
     } else {
       //crear mensaje de alerta y no dejar diligenciar
       this.$swal({
