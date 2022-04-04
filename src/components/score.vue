@@ -110,7 +110,12 @@ export default {
         this.resultPurchaseOrder !== null &&
         this.resultLead !== null
       ) {
-        this.resultPurchaseOrder.client_qualification = this.score.abreviation;
+        console.log("this.score:::::::::", this.score);
+        console.log(
+          "this.resultPurchaseOrder:::::::::",
+          this.resultPurchaseOrder
+        );
+        this.resultPurchaseOrder.client_qualification = this.score;
         this.resultPurchaseOrder.client_feedback = this.detailscore;
 
         // ejecuta la tarea con los dos contratos
